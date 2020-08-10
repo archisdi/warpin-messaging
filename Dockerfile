@@ -8,4 +8,5 @@ FROM alpine
 WORKDIR /app
 COPY --from=build-env /go/src/app/main /app/
 COPY --from=build-env /go/src/app/.env /app/
+COPY --from=build-env /go/src/app/storage /app/storage
 ENTRYPOINT ./main

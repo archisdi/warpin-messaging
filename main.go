@@ -10,6 +10,10 @@ import (
 	"github.com/kataras/iris/v12/mvc"
 )
 
+func initController(app *mvc.Application) {
+	app.Handle(new(controllers.MessageController))
+}
+
 func main() {
 	// load environment variables
 	err := godotenv.Load()
@@ -22,9 +26,6 @@ func main() {
 	mvc.Configure(app.Party("/"), initController)
 
 	// serve app
-	app.Listen(":" + os.Getenv("APP_PORT"))
-}
-
-func initController(app *mvc.Application) {
-	app.Handle(new(controllers.MessageController))
+	port := os.Getenv("APP_PORT")
+	app.Run(iris.Addr(":" + port))
 }
