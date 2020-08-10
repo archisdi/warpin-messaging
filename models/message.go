@@ -8,7 +8,7 @@ import (
 
 // Message ...
 type Message struct {
-	ID        uuid.UUID `json:"id"`
+	ID        string    `json:"id"`
 	Text      string    `json:"text"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
@@ -17,7 +17,7 @@ type Message struct {
 // NewMessage returns new message
 func NewMessage(text string) Message {
 	return Message{
-		ID:        uuid.New(),
+		ID:        uuid.New().String(),
 		Text:      text,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
