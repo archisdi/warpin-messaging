@@ -1,17 +1,18 @@
 package main
 
 import (
-	"fmt"
-	"time"
-	"warpin/models"
+	"warpin/controllers"
+
+	"github.com/kataras/iris/v12"
+	"github.com/kataras/iris/v12/mvc"
 )
 
 func main() {
-	message := models.Message{
-		ID:        "1169",
-		Text:      "Hola Amigos",
-		CreatedAt: time.Now(),
-	}
+	app := iris.New()
+	mvc.Configure(app.Party("/"), initController)
+	app.Listen(":8080")
+}
 
-	fmt.Println(message)
+func initController(app *mvc.Application) {
+	app.Handle(new(controllers.MessageController))
 }

@@ -1,10 +1,15 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	"github.com/google/uuid"
+)
 
 // Message ...
 type Message struct {
-	ID        string
-	Text      string
-	CreatedAt time.Time
+	ID        uuid.UUID `json:"id"`
+	Text      string    `json:"text"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
