@@ -35,7 +35,7 @@ func (c *MessageController) GetMessagesBy(id string) (m.Message, error) {
 // PostMessages creates a new message
 func (c *MessageController) PostMessages(payload struct{ Text string }) (m.Message, error) {
 	message := m.NewMessage(payload.Text)
-	if len(payload.Text) < 1 {
+	if len(message.Text) <= 1 {
 		return message, errors.New("message must be over 1 character")
 	}
 
