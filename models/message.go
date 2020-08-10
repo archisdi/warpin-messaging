@@ -14,6 +14,11 @@ type Message struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
+// String
+func (m *Message) String() string {
+	return m.ID + ":" + m.Text
+}
+
 // NewMessage returns new message
 func NewMessage(text string) Message {
 	return Message{

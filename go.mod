@@ -4,6 +4,7 @@ go 1.13
 
 require (
 	github.com/Joker/jade v1.0.0 // indirect
+	github.com/eclipse/paho.mqtt.golang v1.2.0
 	github.com/flosch/pongo2 v0.0.0-20200805083417-63c99409991d // indirect
 	github.com/google/uuid v1.1.2-0.20200519141726-cb32006e483f
 	github.com/gorilla/schema v1.1.0 // indirect

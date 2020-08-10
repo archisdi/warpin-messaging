@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"errors"
+	mqtt "warpin/libs/mqtt"
 	"warpin/repositories"
 
 	m "warpin/models"
@@ -32,11 +33,18 @@ func (c *MessageController) GetMessagesBy(id string) (m.Message, error) {
 }
 
 // PostMessages creates a new message
-func (c *MessageController) PostMessages(payload struct{ Text string }) m.Message {
-	messageRepo := repositories.MessageRepo{}
+func (c *MessageController) PostMessages(payload struct{ Text string }) (m.Message, error) {
 	message := m.NewMessage(payload.Text)
+	if len(payload.Text) < 1 {
+		return message, errors.New("message must be over 1 character")
+	}
 
+	// persist new message
+	messageRepo := repositories.MessageRepo{}
 	messageRepo.Create(message)
 
-	return message
+	// publish to mqtt server
+	mqtt.Publish("warpin-messaging", message.String())
+
+	return message, nil
 }
