@@ -13,3 +13,13 @@ type Message struct {
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
+
+// NewMessage returns new message
+func NewMessage(text string) Message {
+	return Message{
+		ID:        uuid.New(),
+		Text:      text,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
+}

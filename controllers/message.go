@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"time"
+
 	m "warpin/models"
 
 	"github.com/google/uuid"
@@ -36,10 +37,5 @@ func (c *MessageController) GetMessagesBy(id string) m.Message {
 // PostMessages creates a new message
 func (c *MessageController) PostMessages(payload struct{ Text string }) m.Message {
 	println("Received Message: " + payload.Text)
-	return m.Message{
-		ID:        uuid.New(),
-		Text:      payload.Text,
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
-	}
+	return m.NewMessage(payload.Text)
 }
