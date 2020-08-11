@@ -38,7 +38,7 @@ func createClientOptions(clientID string, uri *url.URL) *mqtt.ClientOptions {
 }
 
 // Listen ...
-func (m *Mqtt) Listen(topic string, response *[]string) {
+func (*Mqtt) Listen(topic string, response *[]string) {
 	client := *Client
 	client.Subscribe(topic, 0, func(client mqtt.Client, msg mqtt.Message) {
 		*response = append(*response, string(msg.Payload()))
@@ -46,7 +46,7 @@ func (m *Mqtt) Listen(topic string, response *[]string) {
 }
 
 // Publish ...
-func (m *Mqtt) Publish(topic string, message string) {
+func (*Mqtt) Publish(topic string, message string) {
 	client := *Client
 	client.Publish(topic, 0, false, message)
 }

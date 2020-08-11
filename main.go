@@ -6,6 +6,7 @@ import (
 	"os"
 	"warpin/controllers"
 	mqtt "warpin/libs/mqtt"
+	repo "warpin/repositories"
 
 	"github.com/joho/godotenv"
 	"github.com/kataras/iris/v12"
@@ -13,7 +14,10 @@ import (
 )
 
 func initController(app *mvc.Application) {
-	app.Handle(new(controllers.MessageController))
+	app.Handle(&controllers.MessageController{
+		MessageRepo: &repo.MessageRepo{},
+		Mqtt:        &mqtt.Mqtt{},
+	})
 }
 
 func main() {

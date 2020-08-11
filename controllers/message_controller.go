@@ -4,16 +4,25 @@ import (
 	"encoding/json"
 	"errors"
 	"time"
-	mqtt "warpin/libs/mqtt"
-	"warpin/repositories"
 
 	m "warpin/models"
 )
 
+type messageRepoInterface interface {
+	FindAll() []m.Message
+	FindOne(string) m.Message
+	Create(m.Message) m.Message
+}
+
+type mqttInterface interface {
+	Listen(string, *[]string)
+	Publish(string, string)
+}
+
 // MessageController ...
 type MessageController struct {
-	MessageRepo repositories.MessageRepo
-	Mqtt        mqtt.Mqtt
+	MessageRepo messageRepoInterface
+	Mqtt        mqttInterface
 }
 
 // GetMessages returns all messages in database

@@ -10,7 +10,7 @@ import (
 type MessageRepo struct{}
 
 // FindAll ...
-func (repo *MessageRepo) FindAll() []models.Message {
+func (*MessageRepo) FindAll() []models.Message {
 	db := db.Database{"message"}
 	byteValue := db.Get()
 
@@ -21,7 +21,7 @@ func (repo *MessageRepo) FindAll() []models.Message {
 }
 
 // FindOne ...
-func (repo *MessageRepo) FindOne(id string) models.Message {
+func (*MessageRepo) FindOne(id string) models.Message {
 	db := db.Database{"message"}
 	byteValue := db.Get()
 
@@ -39,7 +39,7 @@ func (repo *MessageRepo) FindOne(id string) models.Message {
 }
 
 // Create ...
-func (repo *MessageRepo) Create(message models.Message) models.Message {
+func (*MessageRepo) Create(message models.Message) models.Message {
 	db := db.Database{"message"}
 	byteValue := db.Get()
 
