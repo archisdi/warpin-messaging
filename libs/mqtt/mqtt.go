@@ -12,6 +12,9 @@ import (
 // Client ...
 var Client *mqtt.Client
 
+// Mqtt ...
+type Mqtt struct{}
+
 func connect(clientID string, uri *url.URL) mqtt.Client {
 	opts := createClientOptions(clientID, uri)
 	client := mqtt.NewClient(opts)
@@ -21,7 +24,6 @@ func connect(clientID string, uri *url.URL) mqtt.Client {
 	if err := token.Error(); err != nil {
 		log.Fatal(err)
 	}
-	Client = &client
 	return client
 }
 
@@ -36,22 +38,23 @@ func createClientOptions(clientID string, uri *url.URL) *mqtt.ClientOptions {
 }
 
 // Listen ...
-func Listen(topic string) {
+func (m *Mqtt) Listen(topic string, response *[]string) {
 	client := *Client
 	client.Subscribe(topic, 0, func(client mqtt.Client, msg mqtt.Message) {
-		fmt.Printf("* [%s] %s\n", msg.Topic(), string(msg.Payload()))
+		*response = append(*response, string(msg.Payload()))
 	})
 }
 
 // Publish ...
-func Publish(topic string, message string) {
+func (m *Mqtt) Publish(topic string, message string) {
 	client := *Client
 	client.Publish(topic, 0, false, message)
 }
 
 // Initialize ..
-func Initialize(clientID string, uri *url.URL) {
+func Initialize(ClientID string, uri *url.URL) {
 	if Client == nil {
-		connect(clientID, uri)
+		client := connect(ClientID, uri)
+		Client = &client
 	}
 }

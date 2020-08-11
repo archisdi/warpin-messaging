@@ -1,6 +1,7 @@
 package models
 
 import (
+	"encoding/json"
 	"time"
 
 	"github.com/google/uuid"
@@ -14,9 +15,10 @@ type Message struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
-// String
-func (m *Message) String() string {
-	return m.ID + ":" + m.Text
+// Serialize ...
+func (m *Message) Serialize() string {
+	data, _ := json.Marshal(m)
+	return string(data)
 }
 
 // NewMessage returns new message
