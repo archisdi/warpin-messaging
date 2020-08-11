@@ -13,4 +13,5 @@ require (
 	github.com/joho/godotenv v1.3.0
 	github.com/kataras/iris v11.1.1+incompatible
 	github.com/kataras/iris/v12 v12.1.9-0.20200809192844-da029d6f3722
+	github.com/stretchr/testify v1.6.1
 )

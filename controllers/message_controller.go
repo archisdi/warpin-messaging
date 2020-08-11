@@ -4,25 +4,16 @@ import (
 	"encoding/json"
 	"errors"
 	"time"
+	mqtt "warpin/libs/mqtt"
+	repo "warpin/repositories"
 
 	m "warpin/models"
 )
 
-type messageRepoInterface interface {
-	FindAll() []m.Message
-	FindOne(string) m.Message
-	Create(m.Message) m.Message
-}
-
-type mqttInterface interface {
-	Listen(string, *[]string)
-	Publish(string, string)
-}
-
 // MessageController ...
 type MessageController struct {
-	MessageRepo messageRepoInterface
-	Mqtt        mqttInterface
+	MessageRepo repo.MessageRepoInterface
+	Mqtt        mqtt.MqttInterface
 }
 
 // GetMessages returns all messages in database
@@ -66,10 +57,12 @@ func (c *MessageController) GetMessagesBy(id string) (m.Message, error) {
 
 // PostMessages creates a new message
 func (c *MessageController) PostMessages(payload struct{ Text string }) (m.Message, error) {
-	message := m.NewMessage(payload.Text)
-	if len(message.Text) <= 1 {
+	var message m.Message
+	if len(payload.Text) <= 1 {
 		return message, errors.New("message must be over 1 character")
 	}
+
+	message = m.NewMessage(payload.Text)
 
 	c.MessageRepo.Create(message)
 	c.Mqtt.Publish("warpin-messages", message.Serialize())

@@ -6,6 +6,13 @@ import (
 	"warpin/models"
 )
 
+// MessageRepoInterface ...
+type MessageRepoInterface interface {
+	FindAll() []models.Message
+	FindOne(string) models.Message
+	Create(models.Message) error
+}
+
 // MessageRepo ...
 type MessageRepo struct{}
 
@@ -39,7 +46,7 @@ func (*MessageRepo) FindOne(id string) models.Message {
 }
 
 // Create ...
-func (*MessageRepo) Create(message models.Message) models.Message {
+func (*MessageRepo) Create(message models.Message) error {
 	db := db.Database{"message"}
 	byteValue := db.Get()
 
@@ -49,5 +56,5 @@ func (*MessageRepo) Create(message models.Message) models.Message {
 	messages = append(messages, message)
 	db.Set(messages)
 
-	return message
+	return nil
 }

@@ -12,6 +12,12 @@ import (
 // Client ...
 var Client *mqtt.Client
 
+// MqttInterface ...
+type MqttInterface interface {
+	Listen(string, *[]string)
+	Publish(string, string)
+}
+
 // Mqtt ...
 type Mqtt struct{}
 
