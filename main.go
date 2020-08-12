@@ -13,10 +13,16 @@ import (
 	"github.com/kataras/iris/v12/mvc"
 )
 
-func initController(app *mvc.Application) {
+func initialize(app *mvc.Application) {
 	app.Handle(&controllers.MessageController{
 		MessageRepo: &repo.MessageRepo{},
 		Mqtt:        &mqtt.Mqtt{},
+	})
+
+	app.HandleError(func(ctx iris.Context, err error) {
+		ctx.JSON(map[string]interface{}{
+			"message": err.Error(),
+		})
 	})
 }
 
@@ -33,7 +39,7 @@ func main() {
 
 	// create new app instance
 	app := iris.New()
-	mvc.Configure(app.Party("/"), initController)
+	mvc.Configure(app.Party("/"), initialize)
 
 	// serve app
 	port := os.Getenv("APP_PORT")
