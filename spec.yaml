@@ -1,0 +1,117 @@
+openapi: "3.0.2"
+info:
+  title: Warpin Messaging
+  version: "1.0"
+servers:
+  - url: https://api.warpin.archisdi.me
+    description: Production
+  - url: http://localhost:8080
+    description: Local server
+tags:
+  - name: Messages
+paths:
+  /messages:
+    get:
+      description: Get all previosly sent messages
+      tags:
+        - Messages
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/message"
+    post:
+      description: Send a message
+      tags:
+        - Messages
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+      responses:
+        "200":
+          description: Message sent
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/message"
+        "400":
+          description: Validation error
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /messages/{messageId}:
+    get:
+      description: Get a message details
+      parameters:
+        - in: path
+          name: messageId
+          schema:
+            type: string
+          required: true
+          description: UUID of the message to get
+      tags:
+        - Messages
+      responses:
+        "200":
+          description: Message Found
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/message"
+        "404":
+          description: Message Not Found
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /messages/listen:
+    get:
+      description: Listen for a realtime message in given time
+      parameters:
+        - in: query
+          name: timeout
+          schema:
+            type: integer
+          required: false
+          description: duration to wait realtime messages
+      tags:
+        - Messages
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/message"
+components:
+  schemas:
+    message:
+      type: object
+      properties:
+        id:
+          type: string
+        text:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
