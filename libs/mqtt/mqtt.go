@@ -21,7 +21,7 @@ type MqttInterface interface {
 // Mqtt ...
 type Mqtt struct{}
 
-func connect(clientID string, uri *url.URL) mqtt.Client {
+func connect(clientID string, uri *url.URL) (mqtt.Client, error) {
 	opts := createClientOptions(clientID, uri)
 	client := mqtt.NewClient(opts)
 	token := client.Connect()
@@ -29,8 +29,9 @@ func connect(clientID string, uri *url.URL) mqtt.Client {
 	}
 	if err := token.Error(); err != nil {
 		log.Fatal(err)
+		return client, err
 	}
-	return client
+	return client, nil
 }
 
 func createClientOptions(clientID string, uri *url.URL) *mqtt.ClientOptions {
@@ -58,9 +59,14 @@ func (*Mqtt) Publish(topic string, message string) {
 }
 
 // Initialize ..
-func Initialize(ClientID string, uri *url.URL) {
+func Initialize(ClientID string, uri string) error {
 	if Client == nil {
-		client := connect(ClientID, uri)
+		URI, _ := url.Parse(uri)
+		client, err := connect(ClientID, URI)
+		if err != nil {
+			return err
+		}
 		Client = &client
 	}
+	return nil
 }

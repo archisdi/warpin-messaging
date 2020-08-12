@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"net/url"
 	"os"
 	"warpin/controllers"
 	mqtt "warpin/libs/mqtt"
@@ -28,14 +27,16 @@ func initialize(app *mvc.Application) {
 
 func main() {
 	// load environment variables
-	err := godotenv.Load()
-	if err != nil {
+	if envErr := godotenv.Load(); envErr != nil {
 		log.Fatal("error while loading environment file")
+		os.Exit(1)
 	}
 
 	// connect to mqtt server
-	mqttURL, _ := url.Parse(os.Getenv("MQTT_URL"))
-	mqtt.Initialize("", mqttURL)
+	if mqttErr := mqtt.Initialize("", os.Getenv("MQTT_URL")); mqttErr != nil {
+		log.Fatal("error while connecting to mqtt server")
+		os.Exit(1)
+	}
 
 	// create new app instance
 	app := iris.New()
